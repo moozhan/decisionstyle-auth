@@ -78,7 +78,7 @@ router.post('/login', (req, res) => {
             // Set cookies
             const csrfToken = generateCsrfToken(); // Implement this function based on your CSRF token generation logic
             res.cookie('AuthToken', token, { httpOnly: true, secure: true, sameSite: 'None' });
-            res.cookie('XSRF-TOKEN', csrfToken, { httpOnly: false, secure: true, sameSite: 'None' });
+            res.cookie('XSRF-TOKEN', csrfToken, { secure: true, sameSite: 'None' });
 
             // Respond with success message and token
             res.json({
@@ -117,7 +117,12 @@ router.get('/logout', (req, res) => {
   res.send({ message: 'Logged out successfully' });
 });
 
-
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+      return next(err);
+  }
+  res.status(err.status || 500).json({ message: err.message });
+});
 // Utility function to generate CSRF token
 // Implement according to your security requirements
 function generateCsrfToken() {
