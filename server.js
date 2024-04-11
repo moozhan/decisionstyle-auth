@@ -8,14 +8,12 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 const cors = require('cors');
-const flash = require('express-flash');
 
 const authRoutes = require('./routes/authRoutes');
 const gameRoutes = require('./routes/gameRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, './public')));
-app.use(flash());
 
 app.use(cors({
   origin: function (origin, callback) {
