@@ -49,7 +49,7 @@
     </script>
     <script>
         document.getElementById('logoutButton').addEventListener('click', function() {
-            fetch('http://localhost:3000/api/auth/logout', {
+            fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/logout', {
                 method: 'GET',
                 credentials: 'include', // Important for including cookies
             })
