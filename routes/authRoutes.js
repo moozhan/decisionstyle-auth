@@ -21,7 +21,7 @@ router.use(cors({
 }));
 
 // List of allowed origins
-const allowedOrigins = ['http://localhost:5500', 'http://localhost:3000', 'http://localhost:3001'];
+const allowedOrigins = ['http://localhost:5500', 'http://localhost:3000', 'https://decisionauthserver-92e41a504ad4.herokuapp.com','http://localhost:3001'];
 
 // Dynamic CORS policy
 const dynamicCors = (req, callback) => {
@@ -63,7 +63,7 @@ router.post('/login', (req, res) => {
 
   User.findOne({ username }).then(user => {
     if (!user) {
-      res.render('/login', {errorMessage: 'Username not found'})
+      res.render('/login.html', {errorMessage: 'Username not found'})
       return res.status(404).json({ usernamenotfound: 'Username not found' });
     } else {
 
