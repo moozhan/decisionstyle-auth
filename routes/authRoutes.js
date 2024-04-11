@@ -9,8 +9,10 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const User = require('../models/user');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
-
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
 
 const allowedOrigins = ['http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:3000', 'http://localhost:3001', 'https://decisionauthserver-92e41a504ad4.herokuapp.com', 'https://decisionserver-51961461dcec.herokuapp.com'];
 router.use(cors({
@@ -79,23 +81,38 @@ router.post('/login', (req, res) => {
         jwt.sign(
           payload,
           process.env.SECRET_KEY,
-          { expiresIn: 31556926 }, // 1 year in seconds
+          { expiresIn: '1h' }, // Set token expiration to 1 hour
           (err, token) => {
-            res.cookie('AuthToken', token, { httpOnly: true, secure: true, sameSite: 'None' });
+            if (err) {
+              console.error('Error signing token:', err);
+              return res.status(500).json({ message: 'Failed to create authentication token' });
+            }
 
+            // Set cookies
             const csrfToken = generateCsrfToken(); // Implement this function based on your CSRF token generation logic
+            res.cookie('AuthToken', token, { httpOnly: true, secure: true, sameSite: 'None' });
             res.cookie('XSRF-TOKEN', csrfToken, { secure: true, sameSite: 'None' });
 
+            // Respond with success message and token
             res.json({
               success: true,
-              message: "Logged in successfully."
+              message: "Logged in successfully.",
+              token: token // Optionally, you can include the token in the response for client-side storage
             });
           }
         );
       } else {
         return res.status(400).json({ passwordincorrect: 'Password incorrect' });
       }
+    })
+    .catch(error => {
+      console.error('Error comparing passwords:', error);
+      res.status(500).json({ message: 'Internal server error' });
     });
+  })
+  .catch(error => {
+    console.error('Error finding user:', error);
+    res.status(500).json({ message: 'Internal server error' });
   });
 });
 
