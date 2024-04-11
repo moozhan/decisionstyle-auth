@@ -16,8 +16,6 @@ const gameRoutes = require('./routes/gameRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, './public')));
-app.set('view engine', 'ejs')
-app.set('views', __dirname + '/views')
 app.use(flash());
 app.use(session({
   secret: process.env.SESSION_SECRET,
