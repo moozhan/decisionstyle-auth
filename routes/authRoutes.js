@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const User = require('../models/user');
 const cors = require('cors');
-const csrf = require('csurf');
 
 
 const csrfProtection = csrf({ cookie: true });
@@ -60,7 +59,7 @@ router.post('/register', (req, res) => {
 });
 
 // Login User
-router.post('/login', csrfProtection, (req, res) => {
+router.post('/login', (req, res) => {
   console.log('Incoming login request. Headers:', req.headers, 'Cookies:', req.cookies);
 
   const { username, password } = req.body;
