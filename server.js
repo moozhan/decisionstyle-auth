@@ -8,44 +8,33 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 const cors = require('cors');
-
 const authRoutes = require('./routes/authRoutes');
 const gameRoutes = require('./routes/gameRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, './public')));
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
-
 // List of allowed origins
 const allowedOrigins = ['http://localhost:5500', 'https://decisionauthserver-92e41a504ad4.herokuapp.com', 'https://decisionserver-51961461dcec.herokuapp.com', 'http://localhost:3000', 'http://localhost:3001'];
-
-// Dynamic CORS policy
-const dynamicCors = (req, callback) => {
-  const origin = req.header('Origin');
-  // Check if the incoming origin is in the list of allowed origins
-  if (allowedOrigins.includes(origin)) {
-    callback(null, { origin: true, credentials: true }); // Allow the request
-  } else {
-    callback(new Error('Not allowed by CORS')); // Reject the request
-  }
+const corsOptions = {
+  origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+          callback(null, true); // Allow the request
+      } else {
+          callback(new Error('Not allowed by CORS')); // Reject the request
+      }
+  },
+  credentials: true, // This is important for cookies, authorization headers with HTTPS
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
+app.use(cors(corsOptions));
 
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/api/games', gameRoutes);
+app.use('/api/games', cors(corsOptions), gameRoutes);
 
 // Passport middleware
 app.use(passport.initialize());

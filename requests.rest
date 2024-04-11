@@ -1,0 +1,12 @@
+POST http://localhost:3000/players/login 
+Content-Type: application/json
+
+{
+"username": "team"
+
+}
+
+###
+GET https://decisionserver-51961461dcec.herokuapp.com/api/games
+Cookie: AuthToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTgwMjBlMjZhMzA1YWQwOTgzODcyMiIsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTcxMjg2MDg5MSwiZXhwIjoxNzQ0NDE3ODE3fQ.RBK_2UmZr1qEBsdw88nJWZtzPur860TFTlDYDKnQuKo; XSRF-TOKEN=c9569a2c04b68c7fc15fd15efd553b5b919fa6a021856c70146bda23b99d4b5a7f68e0ab6de43b2216f3428db8b7317b3f163e0d3e7614e0dd1d34c1426fcb08
+X-CSRF-Token: c9569a2c04b68c7fc15fd15efd553b5b919fa6a021856c70146bda23b99d4b5a7f68e0ab6de43b2216f3428db8b7317b3f163e0d3e7614e0dd1d34c1426fcb08

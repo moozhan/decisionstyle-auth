@@ -59,6 +59,8 @@ router.post('/register', (req, res) => {
 
 // Login User
 router.post('/login', (req, res) => {
+  console.log('Incoming login request. Headers:', req.headers, 'Cookies:', req.cookies);
+
   const { username, password } = req.body;
 
   User.findOne({ username }).then(user => {
