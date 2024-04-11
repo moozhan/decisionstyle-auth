@@ -1,72 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Games</title>
-</head>
-<body>
-    <h2>Available Games</h2>
-    <div id="greeting"></div>
-    <ul id="gamesList"></ul>
-    <button id="logoutButton">Logout</button>
+<script>
+    function getCsrfToken() {
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('XSRF-TOKEN='))
+            ?.split('=')[1];
+        return csrfToken;
+    }
 
-    <script>
-        function getCsrfToken() {
-            const csrfToken = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('XSRF-TOKEN='))
-                ?.split('=')[1];
-            return csrfToken;
+    const csrfToken = getCsrfToken(); // Assuming you have a function to retrieve the CSRF token
+    console.log('CSRF Token:', csrfToken);
+
+    fetch('https://decisionserver-51961461dcec.herokuapp.com/api/games', {
+        method: 'GET',
+        credentials: 'include', // Include credentials for cookies
+        headers: {
+            'X-CSRF-Token': csrfToken, // Use CSRF token directly
         }
-        const csrfToken = getCsrfToken(); // Assuming you have a function to retrieve the CSRF token
-        console.log('CSRF Token:', csrfToken);
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const greetingElement = document.getElementById('greeting');
+        greetingElement.innerText = `Hi ${data.username}, here are your games:`;
 
-        fetch('https://decisionserver-51961461dcec.herokuapp.com/api/games', {
+        const gamesList = document.getElementById('gamesList');
+        data.games.forEach(game => {
+            let item = document.createElement('li');
+            item.textContent = game.name; // Adjust based on your game data structure
+            gamesList.appendChild(item);
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle error, potentially redirect to login if unauthorized
+    });
+
+    document.getElementById('logoutButton').addEventListener('click', function() {
+        fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/logout', {
             method: 'GET',
-            credentials: 'include', // Include credentials for cookies
-            headers: {
-                'X-CSRF-Token': getCsrfToken(), // Add CSRF token in request headers
-            }
+            credentials: 'include', // Important for including cookies
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (response.ok) {
+                // Redirect to login page or show logged out state
+                window.location.href = '/login.html';
+            } else {
+                throw new Error('Logout failed');
             }
-            return response.json();
-        })
-        .then(data => {
-            const greetingElement = document.getElementById('greeting');
-            greetingElement.innerText = `Hi ${data.username}, here are your games:`;
-
-            const gamesList = document.getElementById('gamesList');
-            data.games.forEach(game => {
-                let item = document.createElement('li');
-                item.textContent = game.name; // Adjust based on your game data structure
-                gamesList.appendChild(item);
-            });
         })
         .catch(error => {
             console.error('Error:', error);
-            // Handle error, potentially redirect to login if unauthorized
         });
-    </script>
-    <script>
-        document.getElementById('logoutButton').addEventListener('click', function() {
-            fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/logout', {
-                method: 'GET',
-                credentials: 'include', // Important for including cookies
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Redirect to login page or show logged out state
-                    window.location.href = '/login.html';
-                } else {
-                    throw new Error('Logout failed');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-        </script>
-</body>
-</html>
+    });
+</script>
