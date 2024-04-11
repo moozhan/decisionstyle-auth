@@ -13,6 +13,7 @@ const gameRoutes = require('./routes/gameRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, './public')));
+const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 
 // List of allowed origins
@@ -29,14 +30,20 @@ const corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
-app.use(cors(corsOptions));
-app.use(cookieParser());
-
 
 // Middleware
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api/games', cors(corsOptions), gameRoutes);
+app.use(cookieParser());
+const csrfProtection = csrf({
+  cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Set secure to true in production
+      sameSite: 'Strict'
+  }
+});
 
 // Passport middleware
 app.use(passport.initialize());
