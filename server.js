@@ -37,7 +37,7 @@ app.use(cors({
 }));
 
 // List of allowed origins
-const allowedOrigins = ['http://localhost:5500', 'http://localhost:3000', 'http://localhost:3001'];
+const allowedOrigins = ['http://localhost:5500', 'https://decisionauthserver-92e41a504ad4.herokuapp.com/', 'https://decisionserver-51961461dcec.herokuapp.com/','http://localhost:3000', 'http://localhost:3001'];
 
 // Dynamic CORS policy
 const dynamicCors = (req, callback) => {
