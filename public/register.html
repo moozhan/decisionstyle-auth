@@ -14,7 +14,7 @@
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/register', {
+            fetch('http://localhost:3000/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -26,7 +26,7 @@
                 })
             }).then(response => response.json())
             .then(data => {window.location.href = '/login.html';})
-            .catch(error => console.error('Error:', error));
+            .catch(error =>  {window.location.href = '/register.html';});
         });
     </script>
 </body>
