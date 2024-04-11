@@ -78,7 +78,7 @@ router.post('/login', (req, res) => {
             // Set cookies
             const csrfToken = generateCsrfToken(); // Implement this function based on your CSRF token generation logic
             res.cookie('AuthToken', token, { httpOnly: true, secure: true, sameSite: 'None' });
-            res.cookie('XSRF-TOKEN', csrfToken, { httpOnly: true, secure: true, sameSite: 'None' });
+            res.cookie('XSRF-TOKEN', csrfToken, { httpOnly: false, secure: true, sameSite: 'None' });
 
             // Respond with success message and token
             res.json({

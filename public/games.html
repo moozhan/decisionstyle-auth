@@ -11,45 +11,53 @@
 
     <script>
         function getCsrfToken() {
+            // Function to retrieve CSRF token from cookies
             const csrfToken = document.cookie
                 .split('; ')
                 .find(row => row.startsWith('XSRF-TOKEN='))
                 ?.split('=')[1];
-            return csrfToken;
+            return decodeURIComponent(csrfToken); // Decode URI component
         }
-    
-        const csrfToken = getCsrfToken(); // Assuming you have a function to retrieve the CSRF token
-        console.log('CSRF Token:', csrfToken);
-    
-        fetch('https://decisionserver-51961461dcec.herokuapp.com/api/games', {
-            method: 'GET',
-            credentials: 'include', // Include credentials for cookies
-            headers: {
-                'X-CSRF-Token': csrfToken, // Use CSRF token directly
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const greetingElement = document.getElementById('greeting');
-            greetingElement.innerText = `Hi ${data.username}, here are your games:`;
-    
-            const gamesList = document.getElementById('gamesList');
-            data.games.forEach(game => {
-                let item = document.createElement('li');
-                item.textContent = game.name; // Adjust based on your game data structure
-                gamesList.appendChild(item);
+
+        function fetchGames() {
+            const csrfToken = getCsrfToken(); // Get CSRF token from cookies
+            console.log('CSRF Token:', csrfToken);
+
+            fetch('https://decisionserver-51961461dcec.herokuapp.com/api/games', {
+                method: 'GET',
+                credentials: 'include', // Ensure cookies are included with the request
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken // Add CSRF token to request headers
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const greetingElement = document.getElementById('greeting');
+                greetingElement.innerText = `Hi ${data.username}, here are your games:`;
+
+                const gamesList = document.getElementById('gamesList');
+                gamesList.innerHTML = ''; // Clear previous entries
+                data.games.forEach(game => {
+                    let item = document.createElement('li');
+                    item.textContent = game.name; // Adjust based on your game data structure
+                    gamesList.appendChild(item);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle error, potentially redirect to login if unauthorized
             });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Handle error, potentially redirect to login if unauthorized
-        });
-    
+        }
+
+        // Call fetchGames function on load
+        document.addEventListener('DOMContentLoaded', fetchGames);
+
         document.getElementById('logoutButton').addEventListener('click', function() {
             fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/logout', {
                 method: 'GET',
@@ -68,6 +76,5 @@
             });
         });
     </script>
-    
 </body>
 </html>
