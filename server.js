@@ -20,17 +20,17 @@ app.use(cookieParser());
 
 const allowedOrigins = ['http://localhost:5500', 'http://localhost:3000', 'http://localhost:3001', 'https://decisionauthserver-92e41a504ad4.herokuapp.com/', 'https://decisionserver-51961461dcec.herokuapp.com/'];
 
+// Set up CORS middleware
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
+      callback(null, true); // Allow the request
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS')); // Reject the request
     }
   },
-  credentials: true
+  credentials: true // Allow cookies to be sent with requests
 }));
-
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
