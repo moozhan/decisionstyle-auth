@@ -75,20 +75,4 @@ mongoose
 // Use Routes
 app.use('/api/auth', authRoutes);
 
-
-app.get('/', (req, res) => {
-  res.render('index')
-})
-
-app.get('/login', (req, res) => {
-  res.render('login')
-})
-
-app.get('/register', (req, res) => {
-  res.render('register')
-})
-
-app.get('/games', (req, res) => {
-  res.render('games')
-})
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
