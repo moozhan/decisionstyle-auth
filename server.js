@@ -13,6 +13,7 @@ const gameRoutes = require('./routes/gameRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, './public')));
+const cookieParser = require('cookie-parser');
 
 // List of allowed origins
 const allowedOrigins = ['http://localhost:5500', 'https://decisionauthserver-92e41a504ad4.herokuapp.com', 'https://decisionserver-51961461dcec.herokuapp.com', 'http://localhost:3000', 'http://localhost:3001'];
@@ -29,6 +30,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 
 // Middleware
