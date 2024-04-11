@@ -14,7 +14,7 @@
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            fetch('http://localhost:3000/api/auth/register', {
+            fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
