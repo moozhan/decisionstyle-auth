@@ -30,20 +30,21 @@ const corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
-// Middleware
 app.use(cors(corsOptions));
+
+// Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api/games', cors(corsOptions), gameRoutes);
 app.use(cookieParser());
+
 const csrfProtection = csrf({
   cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Set secure to true in production
-      sameSite: 'None'
+      sameSite: 'Strict'
   }
 });
-app.use(csrfProtection);
 // Passport middleware
 app.use(passport.initialize());
 
