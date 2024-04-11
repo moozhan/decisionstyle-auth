@@ -37,11 +37,7 @@ app.use('/api/games', gameRoutes);
 
 // Passport middleware
 app.use(passport.initialize());
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Update with your allowed origins
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+
 // Passport Config
 require('./config/passport')(passport);
 
@@ -73,4 +69,12 @@ app.get('/register', (req, res) => {
 app.get('/games', (req, res) => {
   res.sendFile(path.join(__dirname+'/games.html'));
 })
+
+app.use((err, req, res, next) => {
+  if (err) {
+    res.status(403).json({ message: err.message }); // Return CORS error message
+  } else {
+    next(); // Pass to the next middleware
+  }
+});
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
