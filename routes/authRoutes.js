@@ -27,20 +27,6 @@ router.use(cors({
   credentials: true // Allow cookies to be sent with requests
 }));
 
-// List of allowed origins
-
-// Dynamic CORS policy
-const dynamicCors = (req, callback) => {
-  const origin = req.header('Origin');
-  // Check if the incoming origin is in the list of allowed origins
-  if (allowedOrigins.includes(origin)) {
-    callback(null, { origin: true, credentials: true }); // Allow the request
-  } else {
-    callback(new Error('Not allowed by CORS')); // Reject the request
-  }
-};
-
-
 
 // Register User
 router.post('/register', (req, res) => {
