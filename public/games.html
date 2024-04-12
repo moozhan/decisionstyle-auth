@@ -21,7 +21,6 @@
 
         async function fetchGames() {
     const csrfToken = getCsrfToken(); // Get CSRF token from cookies
-
     try {
         const response = await fetch('https://decisionserver-51961461dcec.herokuapp.com/api/games', {
             method: 'GET',
@@ -33,24 +32,23 @@
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`); // More detailed error message
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
-
         const greetingElement = document.getElementById('greeting');
         greetingElement.innerText = `Hi ${data.username}, here are your games:`;
 
         const gamesList = document.getElementById('gamesList');
-        gamesList.innerHTML = ''; // Clear previous entries
+        gamesList.innerHTML = '';
         data.games.forEach(game => {
             let item = document.createElement('li');
-            item.textContent = game.name; // Adjust based on your game data structure
+            item.textContent = game.name;
             gamesList.appendChild(item);
         });
     } catch (error) {
         console.error('Fetch Error:', error);
-        alert('Failed to load games. Please check your network connection or log in again.'); // User feedback
+        alert('Failed to load games. Please check your network connection or log in again.');
     }
 }
 
