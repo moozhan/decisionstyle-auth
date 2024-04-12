@@ -9,7 +9,7 @@ const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser'); 
 const authRoutes = require('./routes/authRoutes');
-const gameRoutes = require('./routes/gameRoutes');
+// const gameRoutes = require('./routes/gameRoutes');
 const jwt = require('jsonwebtoken');
 const session = require('express-session')
 const PORT = process.env.PORT || 3000;
@@ -21,37 +21,32 @@ app.use(express.static(path.join(__dirname, './public')));
 
 app.use(cookieParser());
 
-function authenticate(req, res, next) {
-  const token = req.cookies['AuthToken'];
-  if (!token) {
-    return res.status(401).send('Access denied. No token provided.');
-  }
+// function authenticate(req, res, next) {
+//   const token = req.cookies['AuthToken'];
+//   if (!token) {
+//     return res.status(401).send('Access denied. No token provided.');
+//   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    req.user = decoded;
-    next();
-  } catch (ex) {
-    res.status(400).send('Invalid token.');
-  }
-}
+//   try {
+//     const decoded = jwt.verify(token, process.env.SECRET_KEY);
+//     req.user = decoded;
+//     next();
+//   } catch (ex) {
+//     res.status(400).send('Invalid token.');
+//   }
+// }
 const allowedOrigins = ['http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:3000', 'http://localhost:3001', 'https://decisionauthserver-92e41a504ad4.herokuapp.com', 'https://decisionserver-51961461dcec.herokuapp.com'];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, origin); // Allow the request
-    } else {
-      callback(new Error('Not allowed by CORS')); // Reject the request
-    }
-  },
-  credentials: true // Allow cookies to be sent with requests
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/api/games', gameRoutes);
+// app.use('/api/games', gameRoutes);
 app.use(session({
   secret: 'secret',
   resave: true,
