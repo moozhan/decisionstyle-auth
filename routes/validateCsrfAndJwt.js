@@ -8,7 +8,11 @@ const jwt = require('jsonwebtoken');
 const validateCsrfAndJwt = (req, res, next) => {
     const csrfTokenFromHeader = req.headers['x-csrf-token'];
     const csrfTokenFromCookie = req.cookies['XSRF-TOKEN'];
-    const authToken = req.cookies['AuthToken'];
+    const authToken = req.cookies['AuthToken']; // JWT stored in HttpOnly cookie
+
+    console.log('CSRF Token from Header:', csrfTokenFromHeader);
+    console.log('CSRF Token from Cookie:', csrfTokenFromCookie);
+    console.log('Auth Token:', authToken);
 
     if (!csrfTokenFromCookie || !csrfTokenFromHeader || csrfTokenFromCookie !== csrfTokenFromHeader) {
         return res.status(403).send({ message: "Invalid CSRF token." });
