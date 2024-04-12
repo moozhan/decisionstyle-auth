@@ -28,14 +28,14 @@
             .then(response => {
                 if (response.ok) {
                     // Login was successful, redirect to games.html
-                    window.location.href = '/games.html';
+                    window.location.href = '/games';
                 } else {
                     // Handle login failure
                     throw new Error('Login failed');
                 }
             })
             .catch(error => {
-                window.location.href = '/games.html';
+                window.location.href = '/';
                 console.error('Login failed or no token provided', error);
                 // Implement any user feedback logic here
             });
