@@ -11,61 +11,54 @@
 
     <script>
         function getCsrfToken() {
-            // Function to retrieve CSRF token from cookies
             const csrfToken = document.cookie
                 .split('; ')
                 .find(row => row.startsWith('XSRF-TOKEN='))
                 ?.split('=')[1];
-            return decodeURIComponent(csrfToken); // Decode URI component
+            return csrfToken;
         }
-        async function fetchGames() {
-    const csrfToken = getCsrfToken(); // Get CSRF token from cookies
-    console.log(csrfToken)
+        const csrfToken = getCsrfToken(); // Assuming you have a function to retrieve the CSRF token
+        console.log('CSRF Token:', csrfToken);
 
-    try {
-        const response = await fetch('http://localhost:3001/api/games', {
+        fetch('https://decisionserver-51961461dcec.herokuapp.com/api/games', {
             method: 'GET',
-            credentials: 'include', // Ensure cookies are included with the request
+            credentials: 'include', // Include credentials for cookies
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': getCsrfToken() // Add CSRF token to request headers
+                'X-CSRF-Token': getCsrfToken(), // Add CSRF token in request headers
             }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const greetingElement = document.getElementById('greeting');
+            greetingElement.innerText = `Hi ${data.username}, here are your games:`;
+
+            const gamesList = document.getElementById('gamesList');
+            data.games.forEach(game => {
+                let item = document.createElement('li');
+                item.textContent = game.name; // Adjust based on your game data structure
+                gamesList.appendChild(item);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle error, potentially redirect to login if unauthorized
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const greetingElement = document.getElementById('greeting');
-        greetingElement.innerText = `Hi ${data.username}, here are your games:`;
-
-        const gamesList = document.getElementById('gamesList');
-        gamesList.innerHTML = '';
-        data.games.forEach(game => {
-            let item = document.createElement('li');
-            item.textContent = game.name;
-            gamesList.appendChild(item);
-        });
-    } catch (error) {
-        console.error('Fetch Error:', error);
-        alert('Failed to load games. Please check your network connection or log in again.');
-    }
-}
-
-
-        // Call fetchGames function on load
-        document.addEventListener('DOMContentLoaded', fetchGames);
-
+    </script>
+    <script>
         document.getElementById('logoutButton').addEventListener('click', function() {
-            fetch('http://localhost:3000/api/auth/logout', {
+            fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/logout', {
                 method: 'GET',
                 credentials: 'include', // Important for including cookies
             })
             .then(response => {
                 if (response.ok) {
                     // Redirect to login page or show logged out state
-                    window.location.href = '/login';
+                    window.location.href = '/login.html';
                 } else {
                     throw new Error('Logout failed');
                 }
@@ -74,6 +67,6 @@
                 console.error('Error:', error);
             });
         });
-    </script>
+        </script>
 </body>
 </html>

@@ -17,7 +17,7 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
         
-            fetch('http://localhost:3000/api/auth/login', {
+            fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/login', {
                 method: 'POST',
                 credentials: 'include', // Important for including cookies
                 headers: {
@@ -28,14 +28,14 @@
             .then(response => {
                 if (response.ok) {
                     // Login was successful, redirect to games.html
-                    window.location.href = '/games';
+                    window.location.href = '/api/games';
                 } else {
                     // Handle login failure
                     throw new Error('Login failed');
                 }
             })
             .catch(error => {
-                window.location.href = '/';
+                window.location.href = '/register';
                 console.error('Login failed or no token provided', error);
                 // Implement any user feedback logic here
             });
