@@ -46,9 +46,16 @@ require('./config/passport')(passport);
 // DB Config
 const db = process.env.DB_CONNECTION;
 
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000 // Shorten the timeout to fail faster if not connected
+};
+
+
 // Connect to MongoDB
 mongoose
-  .connect(db)
+  .connect(db, options)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
