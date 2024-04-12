@@ -117,12 +117,7 @@ router.get('/logout', (req, res) => {
   res.send({ message: 'Logged out successfully' });
 });
 
-app.use((err, req, res, next) => {
-    if (res.headersSent) {
-        return next(err);
-    }
-    res.status(err.status || 500).json({ message: err.message });
-});
+
 // Utility function to generate CSRF token
 // Implement according to your security requirements
 function generateCsrfToken() {
