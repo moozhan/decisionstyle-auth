@@ -11,9 +11,11 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const gameRoutes = require('./routes/gameRoutes');
 const jwt = require('jsonwebtoken');
-
+const session = require('express-session')
 const PORT = process.env.PORT || 3000;
 const app = express();
+app.enable('trust proxy'); // add this line
+
 
 app.use(express.static(path.join(__dirname, './public')));
 
@@ -50,6 +52,17 @@ app.use(cors({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api/games', gameRoutes);
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true,
+  proxy: true, // add this line
+  cookie: {
+    secure: true,
+    maxAge: 3600000,
+    store: new MongoStore({ url: config.DB_URL })
+  }
+}));
 
 // Passport middleware
 app.use(passport.initialize());
