@@ -75,16 +75,16 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname+'/login.html'));
-})
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname+'/register.html'));
-})
+  res.sendFile(path.join(__dirname, 'public', 'register.html'));
+});
 
-app.get('/games', authenticate, (req, res) => {
-  res.sendFile(path.join(__dirname+'/games.html'));
-})
+app.get('/games', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'games.html'));
+});
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
