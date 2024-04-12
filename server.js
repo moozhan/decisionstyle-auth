@@ -86,11 +86,5 @@ app.get('/games', authenticate, (req, res) => {
   res.sendFile(path.join(__dirname+'/games.html'));
 })
 
-app.use((err, req, res, next) => {
-  if (err) {
-    res.status(403).json({ message: err.message }); // Return CORS error message
-  } else {
-    next(); // Pass to the next middleware
-  }
-});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
