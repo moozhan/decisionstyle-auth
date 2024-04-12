@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const jwt = require('jsonwebtoken');
 
+const validateCsrfAndJwt = (req, res, next) => {
     const csrfTokenFromHeader = req.headers['x-csrf-token'];
     const csrfTokenFromCookie = req.cookies['XSRF-TOKEN'];
     const authToken = req.cookies['AuthToken'];
@@ -12,6 +13,7 @@ const jwt = require('jsonwebtoken');
     if (!csrfTokenFromCookie || !csrfTokenFromHeader || csrfTokenFromCookie !== csrfTokenFromHeader) {
         return res.status(403).send({ message: "Invalid CSRF token." });
     }
+
     if (!authToken) {
         return res.status(401).send({ message: "No authentication token provided." });
     }
