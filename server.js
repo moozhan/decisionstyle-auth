@@ -59,8 +59,7 @@ app.use(session({
   proxy: true, // add this line
   cookie: {
     secure: true,
-    maxAge: 3600000,
-    store: new MongoStore({ url: config.DB_URL })
+    maxAge: 3600000
   }
 }));
 
