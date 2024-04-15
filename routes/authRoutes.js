@@ -52,11 +52,6 @@ router.post('/register', (req, res) => {
 
 // Login User
 router.post('/login', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigins.join(','));
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
   const { username, password } = req.body;
 
   User.findOne({ username }).then(user => {
@@ -83,7 +78,7 @@ router.post('/login', (req, res) => {
 
             // Set cookies
             const csrfToken = generateCsrfToken(); // Implement this function based on your CSRF token generation logic
-            res.cookie('AuthToken', token, { httpOnly: true, secure: true, sameSite: 'None' });
+            res.cookie('AuthToken', token, { httpOnly: true, secure: true, sameSite: 'None', path:'/', domain: '.sore-wasp-turtleneck.cyclic.app'});
             res.cookie('XSRF-TOKEN', csrfToken, { secure: true, sameSite: 'None' });
             // Respond with success message and token
             res.json({
@@ -109,12 +104,6 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    // Set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', allowedOrigins.join(','));
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  
   // Clear the authentication cookie
   res.cookie('AuthToken', '', { expires: new Date(0), httpOnly: true, secure: true, sameSite: 'None' });
   res.cookie('XSRF-TOKEN', '', { expires: new Date(0), secure: true, sameSite: 'None' });
