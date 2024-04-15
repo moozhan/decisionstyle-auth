@@ -3,13 +3,14 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express');
+const cookieParser = require('cookie-parser'); 
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
 const User = require('../models/user');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+router.use(cookieParser());
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -79,7 +80,6 @@ router.post('/login', (req, res) => {
             const csrfToken = generateCsrfToken(); // Implement this function based on your CSRF token generation logic
             res.cookie('AuthToken', token, { httpOnly: true, secure: true, sameSite: 'None' });
             res.cookie('XSRF-TOKEN', csrfToken, { secure: true, sameSite: 'None' });
-
             // Respond with success message and token
             res.json({
               success: true,

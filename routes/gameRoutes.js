@@ -2,7 +2,6 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const path = require('path');
-const cors = require('cors');
 
 
 // Mocked games data
@@ -11,20 +10,6 @@ const games = [
   { id: 2, name: 'Space Invaders', url: 'http://example.com/game2' },
   // Add more games as needed
 ];
-
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5500', 'https://decisionauthserver-92e41a504ad4.herokuapp.com', 'https://decisionserver-51961461dcec.herokuapp.com', 'https://extinct-stole-duck.cyclic.app', 'https://sore-wasp-turtleneck.cyclic.app'];
-router.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
-}));
-
 
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'games.html'));
