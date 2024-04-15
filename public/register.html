@@ -1,8 +1,3 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-}
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            fetch('http://localhost:3000/api/auth/register', {
+            fetch('https://extinct-stole-duck.cyclic.app/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
