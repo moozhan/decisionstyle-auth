@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +19,7 @@
     <script>
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            fetch('https://decisionauthserver-92e41a504ad4.herokuapp.com/api/auth/register', {
+            fetch('http://localhost:3000/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

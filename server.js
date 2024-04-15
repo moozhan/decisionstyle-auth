@@ -48,8 +48,6 @@ require('./config/passport')(passport);
 const db = process.env.DB_CONNECTION;
 
 const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000 // Shorten the timeout to fail faster if not connected
 };
 
