@@ -52,6 +52,11 @@ router.post('/register', (req, res) => {
 
 // Login User
 router.post('/login', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigins.join(','));
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
   const { username, password } = req.body;
 
   User.findOne({ username }).then(user => {

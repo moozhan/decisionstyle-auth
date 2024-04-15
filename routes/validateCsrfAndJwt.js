@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 const jwt = require('jsonwebtoken');
 
 const validateCsrfAndJwt = (req, res, next) => {
-    const csrfTokenFromHeader = req.headers['X-Csrf-Token']; // Change this to 'x-csrf-token' if using that in client-side
+    const csrfTokenFromHeader = req.headers['x-csrf-token']; // Change this to 'x-csrf-token' if using that in client-side
     const csrfTokenFromCookie = req.cookies['XSRF-TOKEN'];
     const authToken = req.cookies['AuthToken'];
 
