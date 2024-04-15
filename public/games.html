@@ -24,7 +24,7 @@
             method: 'GET',
             credentials: 'include', // Include credentials for cookies
             headers: {
-                'X-CSRF-Token': csrfToken, // Ensure this header name matches what your server expects
+                'x-csrf-token': csrfToken, // Ensure this header name matches what your server expects
             }
         })
         .then(response => {

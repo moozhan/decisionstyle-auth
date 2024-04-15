@@ -3,12 +3,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express');
+const cookieParser = require('cookie-parser'); 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 const cors = require('cors');
-const cookieParser = require('cookie-parser'); 
 const authRoutes = require('./routes/authRoutes');
 const gameRoutes = require('./routes/gameRoutes');
 const PORT = process.env.PORT || 3000;
