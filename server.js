@@ -14,9 +14,11 @@ const gameRoutes = require('./routes/gameRoutes');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+app.use(cookieParser());
+
+
 app.use(express.static(path.join(__dirname, './public')));
 
-app.use(cookieParser());
 
 const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5500', 'https://decisionauthserver-92e41a504ad4.herokuapp.com', 'https://decisionserver-51961461dcec.herokuapp.com', 'https://extinct-stole-duck.cyclic.app', 'https://sore-wasp-turtleneck.cyclic.app'];
 
